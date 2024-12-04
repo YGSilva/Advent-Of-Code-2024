@@ -5,34 +5,59 @@ var dados = File.ReadAllText("input");
 Console.Write($"QUAL PARTE DO DESAFIO QUER RESOLVER? 1 OU 2? ");
 var selecao = Console.ReadLine();
 
-var regex = PadraoRegex();
-
 if (selecao == "1")
-    ParteUm(dados, regex);
+    ParteUm(dados);
 else if (selecao == "2")
     ParteDois(dados);
 
-static void ParteUm(string dados, Regex regex)
+static void ParteUm(string dados)
 {
-    int soma = 0;
+    var mulSomada = 0;
 
-    var resultados = regex.Matches(dados);
+    var resultados = PadraoRegexUm().Matches(dados);
 
     foreach (Match resultado in resultados)
     {
         int numUm = int.Parse(resultado.Groups[1].Value);
         int numDois = int.Parse(resultado.Groups[2].Value);
 
-        soma += numUm * numDois;
+        mulSomada += numUm * numDois;
     }
 
-    Console.WriteLine($"A soma total das multiplicações é: {soma}");
+    Console.WriteLine($"MULTIPLICACAO SOMADA: {mulSomada}");
 }
 
-static void ParteDois(string dados) { }
+static void ParteDois(string dados)
+{
+    var mulSomada = 0;
+
+    var resultados = PadraoRegexDois().Matches(dados);
+
+    var habilitado = true;
+
+    foreach (Match resultado in resultados)
+    {
+        if (habilitado && resultado.Value.StartsWith("mul"))
+        {
+            var numUm = int.Parse(resultado.Groups[1].Value);
+            var numDois = int.Parse(resultado.Groups[2].Value);
+
+            mulSomada += numUm * numDois;
+        }
+        else if (resultado.Value.Equals("do()"))
+            habilitado = true;
+        else if (resultado.Value.Equals("don't()"))
+            habilitado = false;
+    }
+
+    Console.WriteLine($"MULTIPLICACAO SOMADA: {mulSomada}");
+}
 
 partial class Program
 {
     [GeneratedRegex(@"mul\((\d+),(\d+)\)")]
-    private static partial Regex PadraoRegex();
+    private static partial Regex PadraoRegexUm();
+
+    [GeneratedRegex(@"mul\((\d+),(\d+)\)|do\(\)|don't\(\)")]
+    private static partial Regex PadraoRegexDois();
 }
