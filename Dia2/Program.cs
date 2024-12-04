@@ -31,7 +31,7 @@ static void ParteDois(List<string> relatorios)
     {
         var relatorio = linhaRelatorio.Split(' ').Select(int.Parse).ToList();
 
-        if (SeguroComReducaoDoNivel(relatorio))
+        if (RelatorioSeguroComReducaoDoNivel(relatorio))
             relatoriosSeguros++;
     }
 
