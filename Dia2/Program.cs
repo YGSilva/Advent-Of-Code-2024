@@ -58,7 +58,7 @@ static bool ValidarRelatorios(List<int> relatorio)
     return ordenado && validas;
 }
 
-static bool SeguroComReducaoDoNivel(List<int> relatorio)
+static bool RelatorioSeguroComReducaoDoNivel(List<int> relatorio)
 {
     for (int i = 0; i < relatorio.Count; i++)
     {
